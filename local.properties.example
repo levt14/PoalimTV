@@ -1,0 +1,6 @@
+# Copy this file to local.properties and fill in your values.
+# local.properties is NOT checked into version control.
+# Get your TMDB API key at https://www.themoviedb.org/settings/api
+
+sdk.dir=/path/to/your/Android/Sdk
+TMDB_API_KEY=your_tmdb_api_key_here
