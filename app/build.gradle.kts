@@ -9,11 +9,13 @@ plugins {
 
 android {
     namespace = "com.lev.poalimtv"
-    compileSdk = 36
+    //noinspection GradleDependency
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.lev.poalimtv"
         minSdk = 26
+        //noinspection OldTargetApi
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
