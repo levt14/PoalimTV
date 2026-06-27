@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.lev.poalimtv.ui.home.HomeScreen
+import com.lev.poalimtv.ui.navigation.NavGraph
 import com.lev.poalimtv.ui.theme.PoalimTVTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -15,7 +15,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             PoalimTVTheme {
-                HomeScreen()
+                NavGraph()
             }
         }
     }

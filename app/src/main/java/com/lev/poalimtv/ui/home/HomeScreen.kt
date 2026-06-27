@@ -38,15 +38,21 @@ import com.lev.poalimtv.ui.components.MediaCard
 import com.lev.poalimtv.ui.theme.PoalimTVTheme
 
 @Composable
-fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
+fun HomeScreen(
+    onSearchClick: () -> Unit,
+    onFavoritesClick: () -> Unit,
+    onMediaClick: (MediaItem) -> Unit,
+    viewModel: HomeViewModel = hiltViewModel(),
+) {
     val popularMovies by viewModel.popularMovies.collectAsState()
     val popularTvShows by viewModel.popularTvShows.collectAsState()
 
     HomeScreenContent(
         popularMovies = popularMovies,
         popularTvShows = popularTvShows,
-        onSearchClick = {},
-        onFavoritesClick = {},
+        onSearchClick = onSearchClick,
+        onFavoritesClick = onFavoritesClick,
+        onMediaClick = onMediaClick,
     )
 }
 
@@ -57,6 +63,7 @@ fun HomeScreenContent(
     popularTvShows: UiState<List<MediaItem>>,
     onSearchClick: () -> Unit,
     onFavoritesClick: () -> Unit,
+    onMediaClick: (MediaItem) -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -79,8 +86,8 @@ fun HomeScreenContent(
                 .padding(innerPadding)
                 .verticalScroll(rememberScrollState()),
         ) {
-            MediaSection(title = "Popular Movies", uiState = popularMovies)
-            MediaSection(title = "Popular TV Shows", uiState = popularTvShows)
+            MediaSection(title = "Popular Movies", uiState = popularMovies, onItemClick = onMediaClick)
+            MediaSection(title = "Popular TV Shows", uiState = popularTvShows, onItemClick = onMediaClick)
         }
     }
 }
@@ -89,6 +96,7 @@ fun HomeScreenContent(
 private fun MediaSection(
     title: String,
     uiState: UiState<List<MediaItem>>,
+    onItemClick: (MediaItem) -> Unit,
 ) {
     Column(modifier = Modifier.padding(vertical = 8.dp)) {
         Text(
@@ -122,7 +130,7 @@ private fun MediaSection(
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
             ) {
                 items(items = uiState.data, key = { it.id }) { item ->
-                    MediaCard(item = item, onClick = {})
+                    MediaCard(item = item, onClick = { onItemClick(item) })
                 }
             }
         }
@@ -204,6 +212,7 @@ private fun HomeScreenContentPreview() {
             popularTvShows = UiState.Success(previewTvShows),
             onSearchClick = {},
             onFavoritesClick = {},
+            onMediaClick = {},
         )
     }
 }
