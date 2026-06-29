@@ -1,6 +1,7 @@
 package com.lev.poalimtv.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -34,8 +35,17 @@ fun NavGraph(navController: NavHostController = rememberNavController()) {
         ) {
             DetailScreen()
         }
-        dialog("search") {
-            SearchScreen(onDismiss = { navController.popBackStack() })
+        dialog(
+            route = "search",
+            dialogProperties = DialogProperties(usePlatformDefaultWidth = false),
+        ) {
+            SearchScreen(
+                onDismiss = { navController.popBackStack() },
+                onMediaClick = { mediaItem ->
+                    navController.popBackStack()
+                    navController.navigate("detail/${mediaItem.mediaType.name.lowercase()}/${mediaItem.id}")
+                },
+            )
         }
         dialog("favorites") {
             FavoritesScreen(onDismiss = { navController.popBackStack() })
