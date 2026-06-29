@@ -157,7 +157,7 @@ fun SearchScreen(
 }
 
 @Composable
-private fun CenteredHint(text: String, color: androidx.compose.ui.graphics.Color, modifier: Modifier = Modifier) {
+private fun CenteredHint(text: String, color: Color, modifier: Modifier = Modifier) {
     Box(modifier = modifier, contentAlignment = Alignment.Center) {
         Text(
             text = text,
