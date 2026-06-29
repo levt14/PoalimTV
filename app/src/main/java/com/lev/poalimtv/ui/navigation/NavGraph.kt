@@ -47,8 +47,17 @@ fun NavGraph(navController: NavHostController = rememberNavController()) {
                 },
             )
         }
-        dialog("favorites") {
-            FavoritesScreen(onDismiss = { navController.popBackStack() })
+        dialog(
+            route = "favorites",
+            dialogProperties = DialogProperties(usePlatformDefaultWidth = false),
+        ) {
+            FavoritesScreen(
+                onDismiss = { navController.popBackStack() },
+                onMediaClick = { mediaItem ->
+                    navController.popBackStack()
+                    navController.navigate("detail/${mediaItem.mediaType.name.lowercase()}/${mediaItem.id}")
+                },
+            )
         }
     }
 }
