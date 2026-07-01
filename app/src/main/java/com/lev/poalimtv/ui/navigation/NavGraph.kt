@@ -33,7 +33,7 @@ fun NavGraph(navController: NavHostController = rememberNavController()) {
                 navArgument("mediaId") { type = NavType.IntType },
             ),
         ) {
-            DetailScreen()
+            DetailScreen(onBack = { navController.popBackStack() })
         }
         dialog(
             route = "search",

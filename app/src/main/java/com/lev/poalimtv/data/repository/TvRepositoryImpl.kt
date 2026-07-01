@@ -6,6 +6,7 @@ import com.lev.poalimtv.data.remote.TmdbApiService
 import com.lev.poalimtv.data.remote.dto.TvDetailDto
 import com.lev.poalimtv.data.remote.dto.TvShowDto
 import com.lev.poalimtv.data.remote.dto.VideosResponseDto
+import com.lev.poalimtv.domain.model.MediaDetail
 import com.lev.poalimtv.domain.model.MediaItem
 import com.lev.poalimtv.domain.model.MediaType
 import kotlinx.coroutines.flow.Flow
@@ -20,8 +21,8 @@ class TvRepositoryImpl @Inject constructor(
     override suspend fun getPopularTvShows(): Result<List<MediaItem>> =
         runCatching { api.getPopularTvShows().results.map { it.toDomain() } }
 
-    override suspend fun getTvDetails(tvId: Int): Result<MediaItem> =
-        runCatching { api.getTvDetails(tvId).toDomain() }
+    override suspend fun getTvDetails(tvId: Int): Result<MediaDetail> =
+        runCatching { api.getTvDetails(tvId).toDetailDomain() }
 
     override suspend fun getTvTrailerKey(tvId: Int): Result<String?> =
         runCatching { api.getTvVideos(tvId).trailerKey() }
@@ -50,7 +51,7 @@ private fun TvShowDto.toDomain() = MediaItem(
     mediaType = MediaType.TV,
 )
 
-private fun TvDetailDto.toDomain() = MediaItem(
+private fun TvDetailDto.toDetailDomain() = MediaDetail(
     id = id,
     title = name,
     overview = overview,
@@ -59,6 +60,10 @@ private fun TvDetailDto.toDomain() = MediaItem(
     rating = voteAverage,
     releaseDate = firstAirDate,
     mediaType = MediaType.TV,
+    genres = genres.map { it.name },
+    status = status,
+    runtime = null,
+    numberOfSeasons = numberOfSeasons,
 )
 
 private fun FavoriteEntity.toDomain() = MediaItem(

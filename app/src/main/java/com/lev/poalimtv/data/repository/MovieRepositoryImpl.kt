@@ -7,6 +7,7 @@ import com.lev.poalimtv.data.remote.dto.MovieDetailDto
 import com.lev.poalimtv.data.remote.dto.MovieDto
 import com.lev.poalimtv.data.remote.dto.MultiSearchItemDto
 import com.lev.poalimtv.data.remote.dto.VideosResponseDto
+import com.lev.poalimtv.domain.model.MediaDetail
 import com.lev.poalimtv.domain.model.MediaItem
 import com.lev.poalimtv.domain.model.MediaType
 import kotlinx.coroutines.flow.Flow
@@ -21,8 +22,8 @@ class MovieRepositoryImpl @Inject constructor(
     override suspend fun getPopularMovies(): Result<List<MediaItem>> =
         runCatching { api.getPopularMovies().results.map { it.toDomain() } }
 
-    override suspend fun getMovieDetails(movieId: Int): Result<MediaItem> =
-        runCatching { api.getMovieDetails(movieId).toDomain() }
+    override suspend fun getMovieDetails(movieId: Int): Result<MediaDetail> =
+        runCatching { api.getMovieDetails(movieId).toDetailDomain() }
 
     override suspend fun getMovieTrailerKey(movieId: Int): Result<String?> =
         runCatching { api.getMovieVideos(movieId).trailerKey() }
@@ -54,7 +55,7 @@ private fun MovieDto.toDomain() = MediaItem(
     mediaType = MediaType.MOVIE,
 )
 
-private fun MovieDetailDto.toDomain() = MediaItem(
+private fun MovieDetailDto.toDetailDomain() = MediaDetail(
     id = id,
     title = title,
     overview = overview,
@@ -63,6 +64,10 @@ private fun MovieDetailDto.toDomain() = MediaItem(
     rating = voteAverage,
     releaseDate = releaseDate,
     mediaType = MediaType.MOVIE,
+    genres = genres.map { it.name },
+    status = status,
+    runtime = runtime,
+    numberOfSeasons = null,
 )
 
 private fun MultiSearchItemDto.toDomain(): MediaItem? {
